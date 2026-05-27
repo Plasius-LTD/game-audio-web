@@ -3,51 +3,74 @@ name: CD (Publish to npm)
 on:
   workflow_dispatch:
     inputs:
-      bump:
-        description: "Version bump type"
-        required: true
-        type: choice
-        default: patch
-        options:
-          - patch
-          - minor
-          - major
-          - none
-      preid:
-        description: "Pre-release id (e.g. beta, rc). Leave blank for stable"
+      npm_tag:
+        description: "npm dist-tag"
         required: false
         type: string
+        default: "latest"
+      run_tests:
+        description: "Run tests before publishing"
+        required: false
+        type: boolean
+        default: true
+      run_build:
+        description: "Run build before publishing"
+        required: false
+        type: boolean
+        default: true
 
 permissions:
-  actions: read
-  contents: write
-  id-token: write # for npm provenance and SBOM attestations
-  attestations: write
+  contents: read
+  id-token: write
 
 jobs:
-  select-runner:
-    uses: Plasius-LTD/plasius-ltd-site/.github/workflows/package-runner.yml@main
-    permissions:
-      actions: read
-      contents: read
-    secrets: inherit
-
   publish:
-    needs: select-runner
-    runs-on: ${{ fromJSON(needs.select-runner.outputs.runner_labels) }}
+    runs-on: ubuntu-latest
     environment: production
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Use Node.js
+        uses: actions/setup-node@v6
         with:
-          fetch-depth: 0
+          node-version-file: ".nvmrc"
+          registry-url: "https://registry.npmjs.org"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --no-fund --no-audit
+
+      - name: Test
+        if: ${{ inputs.run_tests }}
+        run: npm test
+
+      - name: Build
+        if: ${{ inputs.run_build }}
+        run: npm run build
+
+      - name: Check public package contents
+        run: npm run pack:check
+
+      - name: Ensure version is not already published
+        shell: bash
+        run: |
+          set -euo pipefail
+          package_name="$(node -p "require('./package.json').name")"
+          package_version="$(node -p "require('./package.json').version")"
+          if npm view "${package_name}@${package_version}" version --registry https://registry.npmjs.org >/dev/null 2>&1; then
+            echo "Version already exists on npm: ${package_name}@${package_version}"
+            exit 1
+          fi
 
       - name: Publish package
-        uses: Plasius-LTD/plasius-ltd-site/.github/actions/package-publish@main
-        with:
-          bump: ${{ inputs.bump }}
-          preid: ${{ inputs.preid }}
         env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${NODE_AUTH_TOKEN:-}" ]; then
+            echo "NPM_TOKEN is required"
+            exit 1
+          fi
+          npm publish --access public --provenance --tag "${{ inputs.npm_tag }}" --registry https://registry.npmjs.org
