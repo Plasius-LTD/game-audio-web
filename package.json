@@ -1,6 +1,6 @@
 {
   "name": "@plasius/game-audio-web",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Web Audio runtime adapter scaffold for Plasius game audio.",
   "type": "module",
   "sideEffects": false,
