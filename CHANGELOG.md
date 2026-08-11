@@ -7,16 +7,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 - **Added**
-  - (placeholder)
+  - Add a user-activated Web Audio runtime for portable `@plasius/game-audio`
+    play and stop commands.
+  - Add bounded lazy decoding, decoded-buffer caching, simultaneous voices,
+    mute/stop lifecycle, and captioned visual alternatives.
+  - Add runtime design documentation and failure/limit/lifecycle coverage.
 
 - **Changed**
-  - (placeholder)
+  - Accept the product host's feature decision rather than reading rollout
+    configuration inside the adapter.
 
 - **Fixed**
-  - (placeholder)
+  - Return controlled outcomes for browser-policy, fetch, decode, timeout, and
+    unsupported-command failures so audio cannot interrupt gameplay.
 
 - **Security**
-  - (placeholder)
+  - Bound asset identifiers, encoded bytes, decoded cache entries, concurrent
+    voices, and fetch timeouts without reflecting sensitive failure details.
 
 ## [0.1.3] - 2026-06-22
 

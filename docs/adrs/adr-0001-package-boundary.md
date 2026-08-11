@@ -1,6 +1,6 @@
 # ADR 0001: @plasius/game-audio-web Package Boundary
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-05-27
 - Decision Makers: Plasius engineering
 
@@ -10,7 +10,7 @@ The Plasius in-game audio suite needs independently releasable packages for core
 
 ## Decision
 
-Keep browser-specific playback in a dedicated adapter package so core contracts remain portable and React hosts can choose when to initialize browser audio.
+Keep browser-specific playback in a dedicated adapter package so core contracts remain portable and React hosts can choose when to initialize browser audio. The adapter implements lazy user-activated buffer decoding, bounded concurrent playback, mute/stop/dispose lifecycle, and captioned fallback. Product hosts evaluate rollout and provide the resulting feature decision.
 
 This package uses `game.audio.foundation.enabled` as its initial rollout flag. Product hosts remain responsible for remote flag evaluation and any capability checks required for user-visible controls or diagnostics.
 
@@ -24,7 +24,7 @@ This package uses `game.audio.foundation.enabled` as its initial rollout flag. P
 
 ### Negative
 
-- The first scaffold intentionally contains limited behavior.
+- Stream scheduling and spatial audio remain separate follow-up concerns.
 - Cross-package integration must be tracked by follow-up Tasks after the core contracts stabilize.
 
 ## Related Decisions
