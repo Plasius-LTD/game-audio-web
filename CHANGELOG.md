@@ -18,6 +18,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - **Security**
   - (placeholder)
 
+## [0.1.5] - 2026-08-11
+
+- **Added**
+  - (placeholder)
+
+- **Changed**
+  - (placeholder)
+
+- **Fixed**
+  - (placeholder)
+
+- **Security**
+  - (placeholder)
+
 ## [0.1.4] - 2026-08-11
 
 - **Added**
@@ -72,3 +86,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [0.1.2]: https://github.com/Plasius-LTD/game-audio-web/releases/tag/v0.1.2
 [0.1.3]: https://github.com/Plasius-LTD/game-audio-web/releases/tag/v0.1.3
 [0.1.4]: https://github.com/Plasius-LTD/game-audio-web/releases/tag/v0.1.4
+[0.1.5]: https://github.com/Plasius-LTD/game-audio-web/releases/tag/v0.1.5

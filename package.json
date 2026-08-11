@@ -1,6 +1,6 @@
 {
   "name": "@plasius/game-audio-web",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Bounded Web Audio runtime adapter for portable Plasius game-audio commands.",
   "type": "module",
   "sideEffects": false,
