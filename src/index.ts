@@ -5,6 +5,8 @@ import type {
   StopGameAudioCommand,
 } from "@plasius/game-audio";
 
+export * from "./generated-game-cue-player.js";
+
 export interface GameAudioPackageDescriptor {
   readonly packageName: string;
   readonly featureFlagId: string;

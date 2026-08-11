@@ -29,6 +29,7 @@ It owns:
 - bounded decoded-buffer caching and simultaneous voices
 - mute, command/bus/all stop, and idempotent disposal
 - captioned visual alternatives and controlled fallback outcomes
+- lazy asset-free oscillator cues for bounce, brick, life-loss, level-clear and win events
 
 It does not own game-world authority, speech provider credentials, raw TTS generation, or product-specific feature-flag evaluation.
 
@@ -40,6 +41,7 @@ It does not own game-world authority, speech provider credentials, raw TTS gener
 
 ```ts
 import {
+  createGeneratedGameCuePlayer,
   createWebAudioRuntime,
   packageDescriptor,
   GAME_AUDIO_WEB_PACKAGE,
@@ -70,12 +72,23 @@ await runtime.execute({
     uri: "/audio/home-filled.ogg",
   },
 });
+
+const cues = createGeneratedGameCuePlayer({ featureEnabled: true });
+await cues.activate(true); // call from the same explicit user activation
+cues.play("bounce");
+cues.setMuted(true);
 ```
 
 The host owns the stored feature decision and calls `activate()` from an explicit
 user gesture. The runtime does not read rollout configuration, credentials, or
 account state. Audio failures return controlled outcomes and caption events so
 gameplay and deterministic assessment continue without sound.
+
+`createGeneratedGameCuePlayer` creates no `AudioContext` until
+`activate(true)`. It synthesizes five short original oscillator envelopes and
+performs no network fetch or decode. Cue failures and voice-limit drops return
+controlled status codes. The game must still render equivalent semantic and
+visual feedback; generated cues are never assessment-critical.
 
 ## Development
 

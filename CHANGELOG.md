@@ -26,18 +26,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - Add bounded lazy decoding, decoded-buffer caching, simultaneous voices,
     mute/stop lifecycle, and captioned visual alternatives.
   - Add runtime design documentation and failure/limit/lifecycle coverage.
+  - Add lazy `createGeneratedGameCuePlayer` support for original asset-free
+    bounce, brick, life-loss, level-clear and win oscillator cues.
 
 - **Changed**
   - Accept the product host's feature decision rather than reading rollout
     configuration inside the adapter.
+  - Keep generated cues behind the same explicit activation, remote feature
+    decision and mute lifecycle as buffer playback.
 
 - **Fixed**
   - Return controlled outcomes for browser-policy, fetch, decode, timeout, and
     unsupported-command failures so audio cannot interrupt gameplay.
+  - Stop active generated oscillators immediately on mute or disposal.
 
 - **Security**
   - Bound asset identifiers, encoded bytes, decoded cache entries, concurrent
     voices, and fetch timeouts without reflecting sensitive failure details.
+  - Generate fixed local envelopes without network, learner data, external
+    assets or score authority.
 
 ## [0.1.3] - 2026-06-22
 
