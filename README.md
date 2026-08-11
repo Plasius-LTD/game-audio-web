@@ -50,19 +50,25 @@ console.log(packageDescriptor.packageName === GAME_AUDIO_WEB_PACKAGE);
 console.log(packageDescriptor.featureFlagId === GAME_AUDIO_WEB_FEATURE_FLAG_ID);
 
 const runtime = createWebAudioRuntime({
-  enabled: true,
-  onCaption: ({ text }) => showVisualAudioCaption(text),
+  featureEnabled: true,
+  onCaption: ({ caption }) => showVisualAudioCaption(caption),
 });
 
 // Call synchronously from a trusted click/touch/keyboard handler.
-await runtime.activate();
+await runtime.activate(navigator.userActivation?.isActive === true);
 
 await runtime.execute({
-  kind: "play",
+  type: "play",
   commandId: "home-filled",
+  category: "sfx",
+  priority: "normal",
+  issuedAtEpochMs: Date.now(),
   bus: "sfx",
-  asset: { kind: "audio", uri: "/audio/home-filled.ogg" },
-  caption: "Home bay filled",
+  asset: {
+    assetId: "home-filled",
+    kind: "buffer",
+    uri: "/audio/home-filled.ogg",
+  },
 });
 ```
 
