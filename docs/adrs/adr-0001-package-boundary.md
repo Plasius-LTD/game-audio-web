@@ -12,6 +12,12 @@ The Plasius in-game audio suite needs independently releasable packages for core
 
 Keep browser-specific playback in a dedicated adapter package so core contracts remain portable and React hosts can choose when to initialize browser audio. The adapter implements lazy user-activated buffer decoding, bounded concurrent playback, mute/stop/dispose lifecycle, and captioned fallback. Product hosts evaluate rollout and provide the resulting feature decision.
 
+The same package also owns a small asset-free generated-cue player for games
+that need original event tones without fetching audio. It exposes only five
+fixed cue identifiers and oscillator envelopes, creates its context after
+explicit user activation, and shares bounded voice, mute and disposal rules.
+Generated cues report events but never decide gameplay or assessment outcomes.
+
 This package uses `game.audio.foundation.enabled` as its initial rollout flag. Product hosts remain responsible for remote flag evaluation and any capability checks required for user-visible controls or diagnostics.
 
 ## Consequences
