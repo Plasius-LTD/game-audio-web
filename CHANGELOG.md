@@ -7,6 +7,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 - **Added**
+  - (placeholder)
+
+- **Changed**
+  - (placeholder)
+
+- **Fixed**
+  - (placeholder)
+
+- **Security**
+  - (placeholder)
+
+## [0.1.4] - 2026-08-11
+
+- **Added**
   - Add a user-activated Web Audio runtime for portable `@plasius/game-audio`
     play and stop commands.
   - Add bounded lazy decoding, decoded-buffer caching, simultaneous voices,
@@ -50,3 +64,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 [0.1.2]: https://github.com/Plasius-LTD/game-audio-web/releases/tag/v0.1.2
 [0.1.3]: https://github.com/Plasius-LTD/game-audio-web/releases/tag/v0.1.3
+[0.1.4]: https://github.com/Plasius-LTD/game-audio-web/releases/tag/v0.1.4
