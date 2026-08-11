@@ -8,7 +8,7 @@
 [![Security Policy](https://img.shields.io/badge/security%20policy-yes-orange.svg)](./SECURITY.md)
 [![Changelog](https://img.shields.io/badge/changelog-md-blue.svg)](./CHANGELOG.md)
 
-Web Audio runtime adapter scaffold for Plasius game audio.
+Bounded Web Audio runtime adapter for portable Plasius game-audio commands.
 
 Apache-2.0. ESM + CJS builds. TypeScript types included.
 
@@ -24,10 +24,11 @@ This repository is part of the Plasius in-game audio package suite.
 
 It owns:
 
-- Web Audio lifecycle planning
-- lazy initialization after user activation
-- adapter status and fallback outcome contracts
-- future decoding, streaming, scheduling, bus graph, and limiter implementation surface
+- Web Audio lifecycle planning and runtime activation
+- lazy context creation and asset decoding after user activation
+- bounded decoded-buffer caching and simultaneous voices
+- mute, command/bus/all stop, and idempotent disposal
+- captioned visual alternatives and controlled fallback outcomes
 
 It does not own game-world authority, speech provider credentials, raw TTS generation, or product-specific feature-flag evaluation.
 
@@ -39,6 +40,7 @@ It does not own game-world authority, speech provider credentials, raw TTS gener
 
 ```ts
 import {
+  createWebAudioRuntime,
   packageDescriptor,
   GAME_AUDIO_WEB_PACKAGE,
   GAME_AUDIO_WEB_FEATURE_FLAG_ID,
@@ -46,7 +48,28 @@ import {
 
 console.log(packageDescriptor.packageName === GAME_AUDIO_WEB_PACKAGE);
 console.log(packageDescriptor.featureFlagId === GAME_AUDIO_WEB_FEATURE_FLAG_ID);
+
+const runtime = createWebAudioRuntime({
+  enabled: true,
+  onCaption: ({ text }) => showVisualAudioCaption(text),
+});
+
+// Call synchronously from a trusted click/touch/keyboard handler.
+await runtime.activate();
+
+await runtime.execute({
+  kind: "play",
+  commandId: "home-filled",
+  bus: "sfx",
+  asset: { kind: "audio", uri: "/audio/home-filled.ogg" },
+  caption: "Home bay filled",
+});
 ```
+
+The host owns the stored feature decision and calls `activate()` from an explicit
+user gesture. The runtime does not read rollout configuration, credentials, or
+account state. Audio failures return controlled outcomes and caption events so
+gameplay and deterministic assessment continue without sound.
 
 ## Development
 
@@ -61,6 +84,7 @@ npm run pack:check
 ## Governance
 
 - Architecture decisions: [docs/adrs](./docs/adrs)
+- Runtime design: [docs/design/web-audio-runtime.md](./docs/design/web-audio-runtime.md)
 - Security policy: [SECURITY.md](./SECURITY.md)
 - Code of conduct: [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 - CLA and legal docs: [legal](./legal)
