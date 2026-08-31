@@ -1,6 +1,6 @@
 # @plasius/game-audio-web
 
-[![npm version](https://img.shields.io/npm/v/%40plasius%2Fgame-audio-web.svg)](https://www.npmjs.com/package/@plasius/game-audio-web)
+[![npm version](https://img.shields.io/npm/v/@plasius/game-audio-web.svg)](https://www.npmjs.com/package/@plasius/game-audio-web)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/Plasius-LTD/game-audio-web/ci.yml?branch=main&label=build&style=flat)](https://github.com/Plasius-LTD/game-audio-web/actions/workflows/ci.yml)
 [![coverage](https://img.shields.io/codecov/c/github/Plasius-LTD/game-audio-web)](https://codecov.io/gh/Plasius-LTD/game-audio-web)
 [![License](https://img.shields.io/github/license/Plasius-LTD/game-audio-web)](./LICENSE)
